@@ -1,0 +1,134 @@
+﻿@model WebAppEnterwell.Models.InvoiceDetailsViewModel
+
+@{
+    ViewData["Title"] = "Detalji";
+}
+
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">Detalji fakture</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.InvoiceNumber, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.InvoiceNumber
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.ApplicationUser, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.ApplicationUser
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.InvoiceFor, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.InvoiceFor
+
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.TotalAmount, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.TotalAmount
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.CreateDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.CreateDate.ToString("dd.MM.yyyy")
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.TotalAmountIncludingTax, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.TotalAmountIncludingTax
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.PaymentDueDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.PaymentDueDate.ToString("dd.MM.yyyy")
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.PDV, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Model.PDV
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <h4>Stavke fakture</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:15%;">
+                        Opis stavke
+                    </th>
+                    <th style="width:25%;">
+                        Količina
+                    </th>
+                    <th style="width:15%;">
+                        Cijena
+                    </th>
+                    <th style="width:15%;">
+                        Ukupna cijena
+                    </th>
+
+                    <th style="width:60px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                <tr>
+                    <td>@item.Description</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ItemPrice</td>
+                    <td>@item.TotalItemPrice</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

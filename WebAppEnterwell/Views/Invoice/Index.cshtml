@@ -1,0 +1,103 @@
+﻿@model WebAppEnterwell.Models.InvoiceIndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2><i class="fa fa-category"></i><span>Fakture</span></h2>           
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="x_title button-list-table">
+                <div class="col-md-8">
+                    <button class="btn btn-primary" onclick="newItem()"> <span class="glyphicon glyphicon-plus" style="color:#fff;"></span> Dodaj fakturu </button>
+                   
+                </div>
+                           
+                <div class="clearfix"></div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped  jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Broj fakture</th>
+                            <th class="column-title">Datum kreiranja fakture</th>
+                            <th class="column-title">Datum dospijeća fakture </th>
+                            <th class="column-title">Ukupna cijena s PDV-om </th>                          
+                            <th style="width:2%" class="text-right">Opcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Rows)
+                        {
+                            <tr>
+                                <td style="width:10%;">
+                                  @item.InvoiceNumber
+                                </td>
+                                <td style="width:19%;">
+                                    @item.CreateDate.ToString("dd.MM.yyyy")
+                                </td>
+                                <td style="width:15%;">
+                                    @item.PaymentDueDate.ToString("dd.MM.yyyy")
+                                </td>
+                                <td style="width:15%;">
+                                    @item.TotalAmountIncludingTax
+                                </td>
+                                <td style="width:20%;" class="text-right">
+                                    <a href="@Url.Action("Details", "Invoice", new { id = item.Id })" class="btn btn-info btn-xm">Detalji</a>
+                                    <a href="javascript:showDeleteModal('@item.Id')" class="btn btn-danger btn-xm">Obriši</a>
+                                </td>
+                            </tr>
+                        }
+                </table>
+            </div>
+           
+
+        </div>
+    </div>
+</div>
+@*Delete Modal*@
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #C00;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel" style="color: #fff;">Potvrda brisanja</h4>
+            </div>
+            <div class="modal-body">
+                <input id="baseDeleteUrl" type="hidden" value="@Url.Action("Delete", "Invoice")" />
+                <p style="font-size: 20px">Jeste li sigurni da želite izbrisati podatak?</p>
+                <p class="debug-url"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-remove"></i>Odustani </button>
+                <a href="#" id="deleteItemBtn" class="btn btn-danger btn-ok"><i class="fa fa-trash-o "></i> Obriši </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var showDeleteModal = function (itemId) {
+        // Show modal window.
+        $("#confirm-delete").modal("show");
+
+        // Get base url for delete
+        var baseDeleteUrl = $("#baseDeleteUrl").val();
+
+        // Create full url for delete.
+        var fullDeleteUrl = baseDeleteUrl + "/" + itemId;
+
+        // Set deletion url to anchor tag.
+        $("#deleteItemBtn").attr("href", fullDeleteUrl);
+    }
+
+   
+    var newItem = function () {
+        location.href = '@Url.Action("Create")';
+    }
+
+</script>

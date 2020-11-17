@@ -1,0 +1,82 @@
+﻿@model WebAppEnterwell.Models.InvoiceCreateViewModel
+
+
+<div class="row">
+    <legend class="font-weight-semibold text-primary">Stavke fakture</legend>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width:25%;">
+                   Opis stavke
+                </th>
+                <th style="width:15%;">
+                   Količina
+                </th>
+                <th style="width:25%;">
+                    Cijena
+                </th>
+                <th style="width:35%;">
+                    Ukupna cijena
+                </th>
+              
+               
+            </tr>
+        </thead>
+        <tbody id="InvoiceItems" class="InvoiceItems">
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+                var guid = Guid.NewGuid();
+
+                <tr id="InvoiceItems_@guid">
+                    <input name="Items.Index" type="hidden" value="@i">
+                    <input type="hidden" asp-for="Items[i].Id" />
+                  
+                  
+                    <td>
+                        <input type="text" class="form-control description" name="Items[@item.Id].Description" value="@item.Description" />
+                    </td>
+                    <td>
+                        <input type="number" class="form-control quantity" name="Items[@item.Id].Quantity" value="@item.Quantity" onkeyup="calculateTotalItemPrice(this);" onchange="calculateTotalItemPrice(this);" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control itemPrice" name="Items[@item.Id].ItemPrice" value="@item.ItemPrice" onkeyup="calculateTotalItemPrice(this);" onchange="calculateTotalItemPrice(this);" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control totalItemPrice" name="Items[@item.Id].TotalItemPrice" value="@item.TotalItemPrice" />                                                          
+                    </td>
+                   
+                   
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr id="NewInvoiceItem">
+               
+                <th>
+                    <input id="NewInvoiceItemDescription" type="text" class="form-control description" 
+                           data-val="false"/>
+                </th>
+                <th>
+                    <input id="NewInvoiceItemQuantity" type="number" class="form-control quantity"  onkeyup="calculateTotalItemPrice(this);" onchange="calculateTotalItemPrice(this);"
+                           data-val="false"                      
+                           data-val-requiredifgreaterthan-minvalue="1" />
+                </th>
+                <th>
+                    <input id="NewInvoiceItemItemPrice" type="text" class="form-control itemPrice"  onkeyup="calculateTotalItemPrice(this);" onchange="calculateTotalItemPrice(this);"
+                           data-val="false" />                         
+                </th>
+                <th>
+                    <input id="NewInvoiceItemTotalItemPrice" type="text" class="form-control totalItemPrice" readonly="readonly"  
+                           data-val="false" />                        
+                </th>
+               
+                
+            </tr>
+          
+        </tfoot>
+    </table>
+    <span asp-validation-for="@Model.Items" class="text-danger"></span>
+</div>
+

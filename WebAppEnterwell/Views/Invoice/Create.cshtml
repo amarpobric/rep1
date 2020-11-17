@@ -1,0 +1,363 @@
+﻿@model WebAppEnterwell.Models.InvoiceCreateViewModel
+
+@{
+    ViewData["Title"] = "Dodaj";
+}
+
+<style>
+
+    .form-group {
+        margin-bottom: 2px;
+    }
+
+    .form-control {
+        height: 25px;
+        padding: 0px 5px 0px 10px;
+        font-size: 11px;
+    }
+
+    .input-group-append {
+        height: 36px;
+    }
+
+    label {
+        padding-top: 0px !important;
+        padding-bottom: 2px !important;
+    }
+
+   
+
+    table > thead > tr > th {
+        padding: 2px 2px 5px 2px !important;
+        font-size: 10px !important;
+    }
+
+    table > tbody > tr > td {
+        padding: 2px !important;
+    }
+
+    table > tfoot > tr > th {
+        padding: 2px !important;
+    }
+
+        table > tfoot > tr > th > .form-control, table > tfoot > tr > th > .input-group > .form-control, table > tfoot > tr > th > .input-group > span > .btn {
+            border: 1px solid #64B5F6;
+            height: 25px !important;
+            padding: 2px !important;
+            font-size: 10px !important;
+        }
+
+    table > tbody > tr > td > .form-control {
+        height: 25px !important;
+        padding: 2px !important;
+        font-size: 10px !important;
+    }
+
+    table > tbody > tr > td > .btn, table > tfoot > tr > th > .btn {
+        height: 25px;
+        padding: 2px;
+        width: 40px;
+    }
+
+    table > tbody > tr > td > .input-validation-error {
+        border: 1px solid red !important;
+    }
+
+    table > tfoot > tr > th > .input-validation-error {
+        border: 1px solid red !important;
+    }
+</style>
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">Nova faktura</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "Invoice", FormMethod.Post, new { id = "form" }))
+                {
+                    @Html.HiddenFor(x=>x.ApplicationUserId)
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.InvoiceNumber, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(x => x.InvoiceNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.InvoiceNumber, "", new { @color = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.InvoiceFor, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(x => x.InvoiceFor, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.CreateDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(x => x.CreateDate, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.CreateDate, "", new { @color = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.TotalAmount, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(x => x.TotalAmount, new { @class = "form-control", id = "NewTotalAmount", @readonly = "readonly" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.PaymentDueDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(x => x.PaymentDueDate, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.PaymentDueDate, "", new { @color = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(x => x.TotalAmountIncludingTax, new { @class = "control-label col-md-3" })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(x => x.TotalAmountIncludingTax, new { @class = "form-control", @readonly="readonly" })
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                       
+
+
+                        <div class="col-md-12">
+
+                            @{ Html.RenderPartial("~/Views/Invoice/_Items.cshtml", Model); }
+
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(x => x.PDVId, new { @class = "control-label col-md-3" })
+                            <div class="col-lg-12">
+                                @Html.DropDownListFor(x => x.PDVId, Model.PDV, " ", new { @class = "form-control", id = "dropDown", onchange = "calculateTotalAmountWithTax()" })
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+              
+
+                    <div class="text-right">
+
+                        <button type="submit" class="btn btn-primary">Spremi </button>
+
+                        <a href="@Url.Action("Index","Invoice")" class="btn btn-danger">Odustani </a>
+                    </div>
+
+                 }
+                </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        
+
+        $(function () {
+          
+
+            $('form').submit(function (event) {              
+                form = this;
+                event.preventDefault();
+                setTimeout(function () {
+
+                $('#form').find(".form-control").each(function () {              
+                    var value = $(this).val().toString().replace(/\./g, ","); 
+                    $(this).val(value);
+               
+                });
+            form.submit();
+        }, 200);
+            });
+
+
+            
+
+            $("#NewInvoiceItem").find(".form-control").on("blur", function (event) {
+                setTimeout(function () {
+                    var $focused = $("#NewInvoiceItem").find(".form-control:focus");
+                    if ($focused.length == 0) {                   
+                           createNewItem();                        
+                    }
+                }, 300);
+            });
+        });
+
+       
+
+       
+       
+
+        var createNewItem = function () {
+
+            var newInvoiceItemDescription = $("#NewInvoiceItemDescription").val();
+            var newInvoiceItemQuantity = $("#NewInvoiceItemQuantity").val();
+            var newInvoiceItemItemPrice = $("#NewInvoiceItemItemPrice").val();
+            var newInvoiceItemTotalItemPrice = $("#NewInvoiceItemTotalItemPrice").val();
+          
+
+            $("#NewInvoiceItemDescription").val("");
+            $("#NewInvoiceItemQuantity").val("");
+            $("#NewInvoiceItemItemPrice").val("");
+            $("#NewInvoiceItemTotalItemPrice").val("");
+       
+            var guid = uuidv1();
+
+            $tr = $("<tr />", {
+                id: "InvoiceItems_" + guid
+            });
+
+            $('<input/>', {
+                name: "Items.Index",
+                type: "hidden",
+                value: guid,
+            }).appendTo($tr);
+
+            $('<input/>', {
+                name: "Items[" + guid + "].Id",
+                type: "hidden",
+                value: 0
+            }).appendTo($tr);
+
+            $("<input />", {
+                name: "Items[" + guid + "].Description",
+                type: "text",
+                class: "form-control",
+                value: newInvoiceItemDescription,
+                "data-val": "true",
+                "data-val-requiredif": "Obavezan unos"              
+            }).appendTo($("<td />", {}).appendTo($tr));
+
+            $($("<input />", {
+                name: "Items[" + guid + "].Quantity",
+                type: "number",
+                class: "form-control quantity",
+                value: newInvoiceItemQuantity,
+                "data-val": "true",
+                "data-val-requiredifgreaterthan": "Obavezan unos",
+                "data-val-requiredifgreaterthan-minvalue": "1"
+            }).appendTo($("<td />", {}).appendTo($tr))).on("change keyup", function () {
+                calcucateTotalItemPrice();
+            });
+         
+
+            $($("<input />", {
+                name: "Items[" + guid + "].ItemPrice",
+                type: "text",
+                class: "form-control itemPrice",
+                value: newInvoiceItemItemPrice,
+                "data-val": "true",
+                "data-val-requiredifgreaterthan": "Obavezan unos"               
+            }).appendTo($("<td />", {}).appendTo($tr))).on("change keyup", function () {
+                calculateTotalItemPrice();
+                });
+
+            $("<input />", {
+                name: "Items[" + guid + "].TotalItemPrice",
+                type: "text",
+                class: "form-control totalItemPrice",
+                readonly: "readonly",
+                value: newInvoiceItemTotalItemPrice
+            }).appendTo($("<td />", {}).appendTo($tr));
+
+           
+
+            $tr.appendTo("#InvoiceItems");
+           
+            calculateTotalItemPrice();
+
+            // Reset form validation, include new dynamic added controls
+            var form = $('form');
+            $(form).removeData("validator")    // Added by jQuery Validation
+                   .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
+            $.validator.unobtrusive.parse(form);
+        };
+
+        var calculateTotalItemPrice = function () {
+            var quantity = $("#NewInvoiceItemQuantity").val();
+            var itemPrice = $("#NewInvoiceItemItemPrice").val();
+            var totalItemPrice = quantity * itemPrice;
+            console.log(totalItemPrice);
+            $("#NewInvoiceItemTotalItemPrice").val(totalItemPrice.toFixed(2));
+
+            console.log(totalItemPrice);
+            calculateTotalInvoiceAmount();
+           
+        };
+        var calculateTotalInvoiceAmount = function () {
+            var total = 0;
+            $('.totalItemPrice').each(function () {
+                
+                total += parseFloat($(this).val());
+                $("#NewTotalAmount").val(total.toFixed(2));
+                console.log(total);
+            });
+
+        };
+
+        var calculateTotalAmountWithTax = function () {
+            var taxAmount = 0;         
+            var bihTax = parseFloat(17 / 100);
+            var croTax = parseFloat(25 / 100);
+            var totalAmount = $("#NewTotalAmount").val();
+            if ($('#dropDown :selected').val() == 1) {
+                var test = totalAmount * bihTax;
+                 
+                taxAmount = parseFloat(totalAmount) + parseFloat(test);
+                console.log(taxAmount);
+            }
+            else {
+                var test = totalAmount * croTax;
+                taxAmount = parseFloat(totalAmount) + parseFloat(test);
+                console.log(taxAmount);
+            }
+
+            $("#TotalAmountIncludingTax").val(taxAmount.toFixed(2));
+        };
+
+       
+      
+       
+       
+
+    </script>
+}
