@@ -1,0 +1,66 @@
+﻿@model WebAppEnterwell.Models.PDVCreateViewModel
+@{
+    ViewBag.Title = "Dodaj";
+}
+
+
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">Novi PDV</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "PDV", FormMethod.Post, new { id = "form" }))
+                {
+                   
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(x => x.Name, new { @class = "control-label col-md-3" })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Name, "", new { @color = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(x => x.Value, new { @class = "control-label col-md-3" })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(x => x.Value, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                        </div>
+
+                      
+
+                    </div>
+
+
+                    <div class="text-right">
+
+                        <button type="submit" class="btn btn-primary">Spremi </button>
+
+                        <a href="@Url.Action("Index","Invoice")" class="btn btn-danger">Odustani </a>
+                    </div>
+
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
